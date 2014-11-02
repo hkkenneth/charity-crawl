@@ -1,6 +1,7 @@
 import scrapy
 
 class WiseGivingItem(scrapy.Item):
+    LIST_KEYS = ['orgmemberships', 'statutorystatus']
     name = scrapy.Field()
     icon = scrapy.Field()
     telephone = scrapy.Field()
