@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import time
 
 from scrapyCrawler.items.wisegiving import WiseGivingItem
 
@@ -12,7 +13,14 @@ class WisegivingSpider(scrapy.Spider):
     subpages = [""] #, "&page=report", "&page=ngostand", "&page=finance", "&page=rules"]
 
     def parse(self, response):
+        url = response.url
+        tokens = url.split('/')
         item = WiseGivingItem()
+        item['source_url'] = url.replace('localhost:6081', 'www.wisegiving.org.hk')
+        item['source_id'] = tokens[6][(tokens[6].find('ID=') + 3):]
+        item['source_lang'] = tokens[3]
+        item['source_name'] = 'wisegiving'
+        item['crawl_time'] = int(time.time())
         item['name'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_org"]/b/text()').extract()
         item['icon'] = response.xpath('//img[@id="ctl00_ContentPlaceHolder1_logo"]/@src').extract()
         item['telephone'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_orgtel"]/text()').extract()
@@ -24,6 +32,10 @@ class WisegivingSpider(scrapy.Spider):
         item['yearofest'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_orgestablishyear"]/text()').extract()
         item['orghead'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_orgheadname"]/text()').extract()
         item['orgmemberships'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_membership"]/text()').extract()
+        item['religious'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_religious"]/text()').extract()
+        item['political'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_political"]/text()').extract()
+        item['internationalbody'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_intbody"]/text()').extract()
+        item['professionalbody'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_profbody"]/text()').extract()
         item['statutorystatus'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_in_statutory_status"]/text()').extract()
         item['taxstatus'] = response.xpath('//span[@id="ctl00_ContentPlaceHolder1_tax_exemption_status"]/text()').extract()
         return item

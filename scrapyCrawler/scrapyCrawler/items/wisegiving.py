@@ -1,7 +1,12 @@
 import scrapy
 
 class WiseGivingItem(scrapy.Item):
-    LIST_KEYS = ['orgmemberships', 'statutorystatus']
+    LIST_KEYS = ['orgmemberships', 'statutorystatus', 'professionalbody']
+    source_url = scrapy.Field()
+    source_id = scrapy.Field()
+    source_lang = scrapy.Field()
+    source_name = scrapy.Field()
+    crawl_time = scrapy.Field()
     name = scrapy.Field()
     icon = scrapy.Field()
     telephone = scrapy.Field()
@@ -12,5 +17,9 @@ class WiseGivingItem(scrapy.Item):
     yearofest = scrapy.Field()
     orghead = scrapy.Field()
     orgmemberships = scrapy.Field()
+    religious = scrapy.Field()
+    political = scrapy.Field()
+    internationalbody = scrapy.Field()
+    professionalbody = scrapy.Field()
     statutorystatus = scrapy.Field()
     taxstatus = scrapy.Field()
