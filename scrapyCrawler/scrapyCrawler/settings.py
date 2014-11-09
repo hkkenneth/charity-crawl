@@ -17,6 +17,7 @@ ITEM_PIPELINES = {
     'scrapyCrawler.pipelines.ListExtractionPipeline': 50,
     'scrapyCrawler.pipelines.NamePipeline': 300,
     'scrapyCrawler.pipelines.SeenNamePipeline': 600,
+    'scrapyCrawler.pipelines.TelephoneSanitizePipeline' : 700,
 }
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
