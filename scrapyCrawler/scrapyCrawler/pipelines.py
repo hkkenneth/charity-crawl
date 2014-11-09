@@ -50,7 +50,7 @@ class TelephoneSanitizePipeline(object):
         return item
 
     def helper(self, item, field, spider):
-        if item[field] is not None:
+        if (field in item) and (item[field] is not None):
             telephone = item[field]
             phone_list = telephone.split(',')
             if len(phone_list) == 1:
