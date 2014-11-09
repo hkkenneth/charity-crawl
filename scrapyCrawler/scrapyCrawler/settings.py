@@ -13,6 +13,13 @@ BOT_NAME = 'scrapyCrawler'
 SPIDER_MODULES = ['scrapyCrawler.spiders']
 NEWSPIDER_MODULE = 'scrapyCrawler.spiders'
 
+FEED_EXPORTERS = {
+    "jsonlines": 'scrapyCrawler.feedexporter.UnicodeJsonLinesItemExporter'
+}
+
+FEED_FORMAT = "jsonlines"
+FEED_URI = "file:///home/wing/workspace/charity-crawl/scrapyCrawler/%(name)s-%(time)s.json"
+
 ITEM_PIPELINES = {
     'scrapyCrawler.pipelines.ListExtractionPipeline': 50,
     'scrapyCrawler.pipelines.NamePipeline': 300,
