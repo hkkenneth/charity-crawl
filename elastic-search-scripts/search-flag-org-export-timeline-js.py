@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from elasticsearch import Elasticsearch
 import json
 import sys
 import codecs
+
 
 header = 'Start Date\tEnd Date\tHeadline\tText\tMedia\tMedia Credit\tMedia Caption\tMedia Thumbnail\tType\tTag\tRemarks\n'
 # header = 'Start Date\tEnd Date\tHeadline\tText\tMedia\tMedia Credit\tMedia Caption\tMedia Thumbnail\tType\tTag\n'
@@ -16,10 +18,14 @@ for activity in obj['activities']:
     datetimeTo = "%(dateTo)s %(timeTo)s" % activity['schedule'][0]
     #name = "%(organisationNameEnglish)s(%(organisationNameTChinese)s)" % activity
     name = "%(organisationNameTChinese)s" % activity
+    if u'沒有中文註册名稱' == name:
+        name = "%(organisationNameEnglish)s" % activity
+
     # text = "%(districtNameEnglish)s(%(districtNameTChinese)s)" % activity
-    text = "%(districtNameTChinese)s" % activity
+    text = ""
+    tag = "%(districtNameTChinese)s" % activity
     media = ""
-    mediaCredit = "Wise Giving"
+    mediaCredit = "Internet Source"
     mediaCaption = ""
     mediaThumbnail = ""
     res = es.search(index="charity", body={"query": {"match": {"en.name" : activity['organisationNameEnglish']}}})
@@ -36,8 +42,20 @@ for activity in obj['activities']:
     for hit in res['hits']['hits']:
         media = hit['_source']['en']['icon']
         mediaCaption = hit['_source']['en']["website"]
+        if hit['_source']['source_name'] == 'idonate':
+            mediaCredit = 'iDonate'
+        elif hit['_source']['source_name'] == 'wisegiving':
+            mediaCredit = 'Wise Giving'
+        for key in ['mission', 'objectives', 'services', 'achievements', 'reports', 'description', 'objective']:
+            if key in hit['_source']['tc']:
+                text = hit['_source']['tc'][key]
+                if text is not None:
+                    text = ''.join(text).replace('\t', '').replace('\n', '')
+                    if len(text) > 100:
+                        text = text[0:100] + '...'
+                    break
         # outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t\t\t\t%s\n" % (datetimeFrom, datetimeTo, name, text, media, mediaCredit, mediaCaption, hit['_source']['source_url']))
-        outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t\t\t\t%s\n" % (datetimeFrom, datetimeTo, name, text, media, mediaCredit, mediaCaption, encoder.encode(hit['_source'])))
+        outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t\t\t%s\t%s\n" % (datetimeFrom, datetimeTo, name, text.replace('\r', '').replace('\n', ''), media, mediaCredit, mediaCaption, tag, encoder.encode(hit['_source'])))
         # outfile.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (datetimeFrom, datetimeTo, name, text, media, mediaCredit, mediaCaption))
         break
 outfile.close()
