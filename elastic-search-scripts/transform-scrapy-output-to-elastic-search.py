@@ -1,11 +1,10 @@
 import sys
+import codecs
 
-for line in open(sys.argv[1]):
-    start = 0
-    end = -2
-    if line[start] == '[':
-        start += 1
-    if line[end] != ',':
-        end += 1
-    print '{"index":{}}'
-    print line[start:end]
+outfile = codecs.open(sys.argv[2], 'w', 'utf-8')
+for line in codecs.open(sys.argv[1], 'r', 'utf-8'):
+    outfile.write('{"index":{}}\n')
+    outfile.write(line)
+
+outfile.close()
+
