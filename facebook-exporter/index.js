@@ -20,7 +20,6 @@ fs.readFile(config.storageFile, function (err, data) {
       
       arr = obj[config.sheetName];
       for (i = 0; i < arr.length ; i++) {
-        if (i > 5) { break; }
         el = arr[i];
         var key = el.Start_Date + el.Tag;
         if (!usedMap[key]) {
