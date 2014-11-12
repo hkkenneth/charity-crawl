@@ -1,0 +1,26 @@
+{
+  "name": "facebook-exporter",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "^0.16.0",
+    "async": "^0.8.0",
+    "request": "^2.34.0",
+    "moment": "^2.6.0",
+    "underscore": "^1.6.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hkkenneth/charity-crawl.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hkkenneth/charity-crawl/issues"
+  },
+  "homepage": "https://github.com/hkkenneth/charity-crawl"
+}
